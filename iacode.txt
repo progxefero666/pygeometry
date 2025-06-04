@@ -1,0 +1,360 @@
+export type Vector2d = [number, number];
+
+
+// src\lib\model\base\line2d.ts
+import { Vector2d } from "@/lib/types/types";
+
+/**
+ * class Line2d
+ */
+export class Line2d {
+
+    public static readonly DEF: Line2d = new Line2d([0,0],[0,0]);
+    public linedir: number;
+    public point_0:Vector2d;
+    public point_1:Vector2d;
+
+    constructor(point_0: Vector2d, point_1: Vector2d,linedir?: number) {
+        this.point_0 = point_0;
+        this.point_1 = point_1;
+        this.linedir = linedir || 0; 
+    }
+
+} // end class
+
+//src\lib\model\base\circunf2d.ts
+
+import { Math2d } from "@/lib/math2d/math2d";
+import { Vector2d } from "@/lib/types/types";
+
+/**
+ * class Circunf2d
+ */
+export class Circunf2d {
+
+    // 0: inv clockwise, 1: clockwise
+    public direction: number; 
+    public position: Vector2d;
+    public radius: number;
+
+    constructor(center: Vector2d, radius: number,direction?: number) {
+        this.position = center;
+        this.radius = radius;
+        this.direction = direction || Math2d.DIR_INVCW;
+    }
+
+}//end class
+
+//src\lib\mathbase\mathfunc.ts
+
+import { MathJs } from "@/lib/mathbase/mathjslib";
+//import { sqrt, Matrix } from 'mathjs';
+
+export class MathFunctions {
+
+    public static isZero(value: number): boolean {
+        return Math.abs(value) < 1e-10;
+    }
+
+    public static isEqual(a: number, b: number): boolean {
+        return Math.abs(a - b) < 1e-10;
+    }
+
+    public static esPar(numero: number): boolean {
+        return numero % 2 === 0;
+    }
+
+    public static getPercent(value100: number, valueCalc: number): number {
+        return (valueCalc * 100) / value100;
+    }
+
+    public static getValueOfPercent(value100: number, percCalc: number): number {
+        return (value100 * percCalc) / 100.0;
+    }
+
+}//end class
+
+//src\lib\math2d\mathfunc2d.ts
+
+import { Vector2d } from "@/lib/types/types";
+import { Math2d } from "./math2d";
+import { Line2d } from "./model/line2d";
+import { MathVector2d } from "./mathvector2d";
+
+/**
+ * class MathFunction2d
+ */
+export class MathFunction2d {
+
+    public static getDistance(pointA: Vector2d, pointB: Vector2d): number {
+        const dx = pointA[0] - pointB[0];
+        const dy = pointA[1] - pointB[1];
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public static getTwoPointsAngle(pointA: Vector2d, pointB: Vector2d): number {
+        const dx = pointB[0] - pointA[0];
+        const dy = pointB[1] - pointA[1];
+        const angleRadians = Math.atan2(dy, dx);
+        return angleRadians;
+    }
+
+    public static isEqual(a: number, b: number): boolean {
+        return Math.abs(a - b) < Math2d.EPSILON;
+    }
+
+    public static isZero(value: number): boolean {
+        return MathFunction2d.isEqual(value, 0);
+    }
+
+    public static isPointOnLine(lineStart: Vector2d, lineEnd: Vector2d, point: Vector2d): boolean {
+        const vector1_x = point[0] - lineStart[0];
+        const vector1_y = point[1] - lineStart[1];
+        const vector2_x = lineEnd[0] - lineStart[0];
+        const vector2_y = lineEnd[1] - lineStart[1];
+        const crossProduct = (vector1_x * vector2_y) - (vector1_y * vector2_x);
+
+        return MathFunction2d.isZero(crossProduct);
+    }
+
+    public static isPointOnLine2d(line: Line2d, point: Vector2d): boolean {
+        return MathFunction2d.isPointOnLine(line.point_0, line.point_1, point);
+    }
+
+
+
+} //end class
+
+// src\lib\math2d\mathvector2d.ts
+
+import { Vector2d } from "@/lib/types/types";
+import { Math2d } from "./math2d";
+
+/**
+ * Clase de utilidades para operaciones matemáticas con vectores 2D.
+ * Vector2d = [number, number];
+ */
+export class MathVector2d {
+
+    /**
+     * CrossProduct (producto vectorial) two vector 2D.
+     * El resultado es un escalar que indica la magnitud del "producto vectorial" en 3D
+     * y es útil para determinar la orientación relativa de los vectores.
+     * @returns {number} El valor escalar del producto cruz.
+     */
+    public static getCrossProduct(vector_1: Vector2d, vector_2: Vector2d): number {
+        // Implementación: (vector_1.x * vector_2.y) - (vector_1.y * vector_2.x)
+        return (vector_1[0] * vector_2[1]) - (vector_1[1] * vector_2[0]);
+    }
+
+    /**
+     * Sum el 2 vector del 1, componente a componente.
+     * @returns {Vector2d} new vector.
+     */
+    public static add(vector_1: Vector2d, vector_2: Vector2d): Vector2d {
+        return [vector_1[0] + vector_2[0], vector_1[1] + vector_2[1]];
+    }
+
+    /**
+     * Rest el 2 vector del 1, componente a componente.
+     * @returns {Vector2d} new vector.
+     */
+    public static subtract(vector_1: Vector2d, vector_2: Vector2d): Vector2d {
+        return [vector_1[0] - vector_2[0], vector_1[1] - vector_2[1]];
+    }
+
+    /**
+     * Multiply vector * escalar(number).
+     * @returns {Vector2d} Un nuevo vector escalado.
+     */
+    public static multiplyByScalar(vector: Vector2d, scalar: number): Vector2d {
+        return [vector[0] * scalar, vector[1] * scalar];
+    }
+
+    /**
+     * DotProduct two vector 2D.
+     * @returns {number} El valor escalar del producto punto.
+     */
+    public static getDotProduct(vector_1: Vector2d, vector_2: Vector2d): number {
+        return (vector_1[0] * vector_2[0]) + (vector_1[1] * vector_2[1]);
+    }
+
+    /**
+     * Magnitude vector 2D.
+     */
+    public static getMagnitude(vector: Vector2d): number {
+        return Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1]);
+    }
+
+    /**
+     * Normalize vector 2D
+     */
+    public static normalize(vector: Vector2d): Vector2d {
+        const magnitude = MathVector2d.getMagnitude(vector);
+        if (magnitude === 0) {
+            return [0, 0];
+        }
+        return [vector[0] / magnitude, vector[1] / magnitude];
+    }
+}
+
+//src\lib\math2d\mathcircf2d.ts
+
+import { Circunf2d } from "./model/circunf2d";
+import { Line2d } from "./model/line2d";
+import { Vector2d } from "../types/types";
+import { Math2d } from "./math2d";
+import { MathFunction2d } from "./mathfunc2d";
+import { MathVector2d } from "./mathvector2d";
+
+/**
+ * class MathCircf2d
+ */
+export class MathCircf2d {
+
+    public static getCfPoint(centro: Vector2d, radio: number, anguloRadianes: number): Vector2d {
+
+        const xRelativo = radio * Math.cos(anguloRadianes);
+        const yRelativo = radio * Math.sin(anguloRadianes);
+        const x = centro[0] + xRelativo;
+        const y = centro[1] + yRelativo;
+
+        return [x, y];
+    }
+
+    public static getLineCircleRelation(circleCenter: Vector2d, circleRadius: number, line: Line2d): number {
+        const lineLength = MathFunction2d.getDistance(line.point_0, line.point_1);
+        if (MathFunction2d.isZero(lineLength)) {
+            throw new Error("Cannot determine line-circle.");
+        }
+
+        const A = line.point_1[1] - line.point_0[1];
+        const B = line.point_0[0] - line.point_1[0];
+        const C = -A * line.point_0[0] - B * line.point_0[1];
+
+        const distanceNumerator = Math.abs(A * circleCenter[0] + B * circleCenter[1] + C);
+        const distance = distanceNumerator / lineLength;
+
+        if (MathFunction2d.isEqual(distance, circleRadius)) {
+            return Math2d.REL_LINE_CF_TANGENTE;
+        }
+        else if (distance < circleRadius) {
+            return Math2d.REL_LINE_CF_SECANTE;
+        }
+        else {
+            return Math2d.REL_LINE_CF_EXTERIOR;
+        }
+    }
+
+    /**
+     * Checks if two circles have potential intersection points (including tangent cases).
+     */
+    public static areCirclesIntersecting(circf_0: Circunf2d, circf_1: Circunf2d): boolean {
+        const d = MathFunction2d.getDistance(circf_0.position, circf_1.position);
+        if (MathFunction2d.isZero(d)) { return false; }
+        if (d > (circf_0.radius + circf_1.radius) || d < Math.abs(circf_0.radius - circf_1.radius)) { return false; }
+        const a = (circf_0.radius * circf_0.radius - circf_1.radius * circf_1.radius + d * d) / (2 * d);
+        const hSquared = circf_0.radius * circf_0.radius - a * a;
+        if (hSquared < -Math2d.EPSILON) { return false; }
+        return true;
+    }
+
+    public static getInter(circf_0: Circunf2d, circf_1: Circunf2d): Vector2d[] {
+        const intersectionPoints: Vector2d[] = [];
+        const d = MathFunction2d.getDistance(circf_0.position, circf_1.position);
+        if (MathFunction2d.isZero(d)) {
+            if (MathFunction2d.isEqual(circf_0.radius, circf_1.radius)) {
+                throw new Error("Concentric and identical circles.");
+            }
+            else { return intersectionPoints; }
+        }
+
+        if (MathCircf2d.areCirclesIntersecting(circf_0, circf_1)) {
+            return intersectionPoints;
+        }
+
+        const a = (circf_0.radius * circf_0.radius - circf_1.radius * circf_1.radius + d * d) / (2 * d);
+        const h = Math.sqrt(Math.max(0, (circf_0.radius * circf_0.radius - a * a)));
+
+        const vec_pA_pB: Vector2d = MathVector2d.normalize(MathVector2d.subtract(circf_1.position, circf_0.position));
+        const displacement_to_p3: Vector2d = MathVector2d.multiplyByScalar(vec_pA_pB, a);
+        const p3: Vector2d = MathVector2d.add(circf_0.position, displacement_to_p3);
+
+        const normal_vec_x = -vec_pA_pB[1];
+        const normal_vec_y = vec_pA_pB[0];
+        const normal_vec_magnitude = Math.sqrt(normal_vec_x * normal_vec_x + normal_vec_y * normal_vec_y);
+
+        let offsetX: number = 0;
+        let offsetY: number = 0;
+        if (MathFunction2d.isZero(normal_vec_magnitude)) {
+            offsetX = (h * normal_vec_x) / normal_vec_magnitude;
+            offsetY = (h * normal_vec_y) / normal_vec_magnitude;
+        }
+        const intersection1: Vector2d = [p3[0] + offsetX, p3[1] + offsetY];
+        const intersection2: Vector2d = [p3[0] - offsetX, p3[1] - offsetY];
+        if (MathFunction2d.isZero(h)) {
+            intersectionPoints.push(intersection1);
+        }
+        else {
+            intersectionPoints.push(intersection1, intersection2);
+        }
+        return intersectionPoints;
+    }
+
+    public static getInterLine(circf_0: Circunf2d, circf_1: Circunf2d): Line2d {
+        const intersections = MathCircf2d.getInter(circf_0, circf_1);
+        if (intersections.length < 2) {
+            throw new Error("circles do not intersect at two distinct points.");
+        }
+        const i1 = intersections[0];
+        const i2 = intersections[1];
+        const angle_i1_to_i2 = MathFunction2d.getTwoPointsAngle(i1, i2);
+
+        let point0: Vector2d;
+        let point1: Vector2d;
+        if (angle_i1_to_i2 >= 0 && angle_i1_to_i2 < Math.PI) {
+            point0 = i1;
+            point1 = i2;
+        } else {
+            point0 = i2;
+            point1 = i1;
+        }
+        let linedir: number = 1;
+        if (MathFunction2d.isEqual(point0[0], i1[0]) && MathFunction2d.isEqual(point0[1], i1[1])) {
+            linedir = 0;
+        }
+        return new Line2d(point0, point1, linedir);
+    }
+
+
+    public static getArea(radius: number): number {
+        return Math.PI * (radius * radius);
+    }
+
+    /*
+       solo para circunferencia y linea secante 
+    */
+    public static getLineSecCfIntersections(line: Line2d, circle: Circunf2d): Vector2d[] {
+        
+        const dx = line.point_1[0] - line.point_0[0];
+        const dy = line.point_1[1] - line.point_0[1];
+        const lineDirection: Vector2d = [dx, dy];
+
+        const a = lineDirection[0] * lineDirection[0] + lineDirection[1] * lineDirection[1];
+        const ocX = line.point_0[0] - circle.position[0];
+        const ocY = line.point_0[1] - circle.position[1];
+        const b = 2 * (ocX * lineDirection[0] + ocY * lineDirection[1]);
+        const c = (ocX * ocX + ocY * ocY) - (circle.radius * circle.radius);
+        const delta = b * b - 4 * a * c;
+        const sqrtDelta = Math.sqrt(delta);
+        const t1 = (-b - sqrtDelta) / (2 * a);
+        const t2 = (-b + sqrtDelta) / (2 * a);
+        return [
+            [line.point_0[0] + t1 * lineDirection[0], line.point_0[1] + t1 * lineDirection[1]],
+            [line.point_0[0] + t2 * lineDirection[0], line.point_0[1] + t2 * lineDirection[1]]
+        ];
+    }
+
+ 
+
+}//end class

@@ -1,0 +1,74 @@
+//src\app\geoeuler2d\scene\scene_a.ts
+
+import { MathGraphs } from "@/lib/graph/math/mathgraphs";
+import { WebColors } from "@/lib/graph/webcolors";
+import { Math2d } from "@/lib/math2d/math2d";
+import { MathCircf2d } from "@/lib/math2d/mathcircf2d";
+import { Circunf2d } from "@/lib/math2d/model/circunf2d";
+import { Dimension } from "@/lib/math2d/model/dimension2d";
+import { Line2d } from "@/lib/math2d/model/line2d";
+import { Point2d } from "@/lib/math2d/model/point2d";
+import { GeoEuler2dScene } from "@/lib/math2d/scene/eulerscene";
+import { Vector2d } from "@/lib/types/types";
+
+
+/**
+ * class SceneA
+ */
+export class SceneA extends GeoEuler2dScene {
+
+    public constructor(name: string, dimension:Dimension,description?: string) {
+        super(name, dimension, description);
+
+        this.ejecuteStep_1();
+        this.ejecuteStep_2()
+    }
+
+    public ejecuteStep_1(): void {
+        this.current_step = 1;
+
+        //MathCircf2d.getExternalCommonTangents(circA: Circunf2d, circB: Circunf2d): Line2d[]
+        const pt_a: Point2d = new Point2d([-50, 50], MathGraphs.DEF_PT_COLOR);
+        const pt_b: Point2d = new Point2d([50, 50], WebColors.COLOR_GREEN);
+
+        const line_ab: Line2d = new Line2d(
+            pt_a.coords, pt_b.coords,
+            Math2d.DIR_INVCW, WebColors.COLOR_WHITE);
+
+        const circ_a: Circunf2d = new Circunf2d(
+            pt_a.coords, 30,
+            Math2d.DIR_INVCW, MathGraphs.DEF_CF_COLOR);
+
+        const circ_b: Circunf2d = new Circunf2d(
+            pt_b.coords, 30,
+            Math2d.DIR_INVCW, MathGraphs.DEF_CF_COLOR);
+
+        //MathCircf2d.getExternalCommonTangents(circA: Circunf2d, circB: Circunf2d): Line2d[]
+
+        this.addPoint("pt_a", pt_a);
+        this.addPoint("pt_b", pt_b);
+        this.addLine("line_ab", line_ab);
+        this.addCircunference("circ_a", circ_a);
+        this.addCircunference("circ_b", circ_b);
+
+    }// end of loadInitObjects
+
+    public ejecuteStep_2(): void {
+        this.current_step = 1;
+
+        const pt_c: Point2d = new Point2d([-50, -50], WebColors.COLOR_RED);
+        const pt_d: Point2d = new Point2d([50, -50]);
+        const line_cd: Line2d = new Line2d(
+            pt_c.coords, pt_d.coords,
+            Math2d.DIR_INVCW, WebColors.COLOR_PLATE);
+        const circ_c: Circunf2d = new Circunf2d(pt_c.coords, 30);
+        const circ_d: Circunf2d = new Circunf2d(pt_d.coords, 30);
+
+        this.addPoint("pt_c", pt_c);
+        this.addPoint("pt_d", pt_d);
+        this.addLine("line_cd", line_cd);
+        this.addCircunference("circ_c", circ_c);
+        this.addCircunference("circ_d", circ_d);
+    }// end
+
+} // end of class SceneA

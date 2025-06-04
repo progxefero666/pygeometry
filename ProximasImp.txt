@@ -1,0 +1,15 @@
+
+C:\sqlite\bbdd\particles.db
+
+funcion en typescript para q me devuelva las 2 lineas tangentes exteriores a 2 circunferencias dadas no concentricas conocidas de distinto radio. 
+
+export type Vector2d = [number, number];
+
+
+cacular dif radios.
+ poner una cf en el centro de la grande con ese radio. 
+ cacular H o punto central entre las 2 fc originales,
+ hacer la interseccion de una circf de radio H-->centro de cf grande
+ calcular las dos lineas para la futura inters con el perimetro de la cf grande .
+ calcular estos puntos de inters.--> crear la lineas de los vectores del centro a esas intersecciones.
+ poner estas paralelas en la cf pequeña y ya esta. tenemos los 4 puntos necesarios.
