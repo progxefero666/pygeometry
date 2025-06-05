@@ -12,7 +12,7 @@ export class Plane3d {
     public normal: Vector3d;
     public plpoint: Vector3d;
 
-    constructor(normal: Vector3d,plpoint: Vector3d, color?: string) {
+    constructor(normal:Vector3d,plpoint:Vector3d,color?: string) {
         this.normal = normal;
         this.plpoint = plpoint;
         this.color = color ||  WebColors.COLOR_WHITE;

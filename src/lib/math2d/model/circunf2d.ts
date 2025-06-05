@@ -3,16 +3,17 @@
 import { WebColors } from "@/lib/graph/webcolors";
 import { Math2d } from "@/lib/math2d/math2d";
 import { Vector2d } from "@/lib/types/types";
+import { Join2d } from "../../tree2d/model/join2d";
 
 /**
  * class Circunf2d
  */
 export class Circunf2d {
     
-    public color: string = WebColors.COLOR_WHITE;
 
-    // 0: inv clockwise, 1: clockwise MathGraphs.DEF_CF_COLOR
-    //Math2d.DIR_INVCW
+
+    // properties
+    public color: string = WebColors.COLOR_WHITE;
     public direction: number; 
     public position: Vector2d;
     public radius: number;

@@ -1,10 +1,10 @@
 //src\common\math\mathcurve2d.ts
 
-import { MathFunctions } from "../mathbase/mathfunc";
-import { Vector2d } from "../types/types";
+import { MathFunctions } from "../../mathbase/mathfunc";
+import { Vector2d } from "../../types/types";
 import { MathCircf2d } from "./mathcircf2d";
-import { CfCurve2d } from "./model/curve2d";
-import { Figure2d } from "./model/figure2d";
+import { CfCurve2d } from "../model/curve2d";
+import { Figure2d } from "../modelgroup/figure2d";
 
 
 
@@ -18,7 +18,7 @@ export class MathFigure2dGen {
         const countLayers: number = 1;
         const countTotalElements: number = countBaseElements * countLayers;
         const angleRange = (2 * Math.PI) / countTotalElements;
-        const elem_radius = MathCircf2d.getCfCurveRadius(figureRadius,angleRange); 
+        const elem_radius = MathCircf2d.getCircunfCurveRadius(figureRadius,angleRange); 
 
         const curves: CfCurve2d[] = [];
         let directionN = true;
@@ -36,7 +36,7 @@ export class MathFigure2dGen {
         const countTotalElements: number = countBaseElements * countLayers;
         const angleRange = (2 * Math.PI) / countTotalElements;
         
-        const elem_radius = MathCircf2d.getCfCurveRadius(figureRadius, angleRange);
+        const elem_radius = MathCircf2d.getCircunfCurveRadius(figureRadius, angleRange);
 
         const curves: CfCurve2d[] = [];
         let directionN = true;
@@ -60,7 +60,7 @@ export class MathFigure2dGen {
         const countTotalElements: number = countBaseElements * countLayers;
         const angleRange = (2 * Math.PI) / countTotalElements;
         
-        const elem_radius = MathCircf2d.getCfCurveRadius(figureRadius, angleRange);
+        const elem_radius = MathCircf2d.getCircunfCurveRadius(figureRadius, angleRange);
 
         const radiusPercDiff: number= 30.0;
         const percGroupA: number = 100.0 - radiusPercDiff;
@@ -90,7 +90,7 @@ export class MathFigure2dGen {
         const countTotalElements: number = countBaseElements * countLayers;
         const angleRange = (2 * Math.PI) / countTotalElements;
         
-        const elem_radius = MathCircf2d.getCfCurveRadius(figureRadius, angleRange);
+        const elem_radius = MathCircf2d.getCircunfCurveRadius(figureRadius, angleRange);
 
         const radiusPercDiff: number= 30.0;
         

@@ -1,33 +1,35 @@
 //src\lib\math2d\mathcircf2d.ts
 
-import { Circunf2d } from "./model/circunf2d";
-import { Line2d } from "./model/line2d";
-import { Vector2d } from "../types/types";
-import { Math2d } from "./math2d";
+import { Circunf2d } from "../model/circunf2d";
+import { Line2d } from "../model/line2d";
+import { Vector2d } from "../../types/types";
+import { Math2d } from "../math2d";
 import { MathFunction2d } from "./mathfunc2d";
 import { MathVector2d } from "./mathvector2d";
-import { MathGraphs } from "../graph/math/mathgraphs";
+import { MathGraphs } from "../../graph/math/mathgraphs";
 
 /**
- * class MathCircf2d.getExternalCommonTangents(circA: Circunf2d, circB: Circunf2d): Line2d[]
+ * class MathCircf2d.getCircunfPoint(Vector2d,radio,MathUnits.toRadians(anguloRadianes))
  */
 export class MathCircf2d {
 
-    static getCfCurveRadius(radio: number, angleRange: number): number {
+    public static getCircunfCurveRadius(radio: number, angleRange: number): number {
         return radio * Math.sin(angleRange / 2);
     }
-        
-    public static getCfPoint(centro: Vector2d, radio: number, anguloRadianes: number): Vector2d {
 
+    public static getCiruncfArea(radius: number): number {
+        return Math.PI * (radius * radius);
+    }
+
+    public static getCircunfPoint(centro: Vector2d, radio: number, anguloRadianes: number): Vector2d {
         const xRelativo = radio * Math.cos(anguloRadianes);
         const yRelativo = radio * Math.sin(anguloRadianes);
         const x = centro[0] + xRelativo;
         const y = centro[1] + yRelativo;
-
         return [x, y];
     }
 
-    public static getLineCircleRelation(circleCenter: Vector2d, circleRadius: number, line: Line2d): number {
+    public static getLineCircunfRelation(circleCenter: Vector2d, circleRadius: number, line: Line2d): number {
         const lineLength = MathFunction2d.getDistance(line.point_0, line.point_1);
         if (MathFunction2d.isZero(lineLength)) {
             throw new Error("Cannot determine line-circle.");
@@ -54,7 +56,7 @@ export class MathCircf2d {
     /**
      * Checks if two circles have potential intersection points (including tangent cases).
      */
-    public static areCirclesIntersecting(circf_0: Circunf2d, circf_1: Circunf2d): boolean {
+    public static areCircunfsIntersecting(circf_0: Circunf2d, circf_1: Circunf2d): boolean {
         const d = MathFunction2d.getDistance(circf_0.position, circf_1.position);
         const r0 = circf_0.radius;
         const r1 = circf_1.radius;
@@ -73,7 +75,7 @@ export class MathCircf2d {
         return true;
     }
 
-    public static getInter(circf_0: Circunf2d, circf_1: Circunf2d): Vector2d[] {
+    public static getCircunfsIntersectings(circf_0: Circunf2d, circf_1: Circunf2d): Vector2d[] {
         const intersectionPoints: Vector2d[] = [];
         const d = MathFunction2d.getDistance(circf_0.position, circf_1.position);
 
@@ -85,7 +87,7 @@ export class MathCircf2d {
                 return intersectionPoints;
             }
         }
-        if (!MathCircf2d.areCirclesIntersecting(circf_0, circf_1)) {
+        if (!MathCircf2d.areCircunfsIntersecting(circf_0, circf_1)) {
             return intersectionPoints;
         }
 
@@ -118,11 +120,11 @@ export class MathCircf2d {
             intersectionPoints.push(intersection2);
         }
         return intersectionPoints;
-    }
+    };
 
 
-    public static getInterLine(circf_0: Circunf2d, circf_1: Circunf2d): Line2d {
-        const intersections = MathCircf2d.getInter(circf_0, circf_1);
+    public static getCircunfsInterLine(circf_0: Circunf2d, circf_1: Circunf2d): Line2d {
+        const intersections = MathCircf2d.getCircunfsIntersectings(circf_0, circf_1);
         if (intersections.length < 2) {
             throw new Error("circles do not intersect at two distinct points.");
         }
@@ -144,17 +146,12 @@ export class MathCircf2d {
             linedir = 0;
         }
         return new Line2d(point0, point1, linedir);
-    }
-
-
-    public static getArea(radius: number): number {
-        return Math.PI * (radius * radius);
-    }
+    };
 
     /*
        solo para circunferencia y linea secante 
     */
-    public static getLineSecCfIntersections(line: Line2d, circle: Circunf2d): Vector2d[] {
+    public static getLineSecantesCfsIntersections(line: Line2d, circle: Circunf2d): Vector2d[] {
 
         const dx = line.point_1[0] - line.point_0[0];
         const dy = line.point_1[1] - line.point_0[1];
@@ -175,24 +172,21 @@ export class MathCircf2d {
         ];
     }
 
-    public static findExternallyTangentCircles(circA: Circunf2d,circB: Circunf2d,radiusR: number): Circunf2d[] {
+    public static findExtCircunfsTangents(circA: Circunf2d, circB: Circunf2d, radiusR: number): Circunf2d[] {
 
         const rA_aux = circA.radius + radiusR;
-        const C_A_aux = new Circunf2d(circA.position, rA_aux,Math2d.DIR_INVCW);
+        const C_A_aux = new Circunf2d(circA.position, rA_aux, Math2d.DIR_INVCW);
         const rB_aux = circB.radius + radiusR;
-        const C_B_aux = new Circunf2d(circB.position, rB_aux,Math2d.DIR_INVCW);
+        const C_B_aux = new Circunf2d(circB.position, rB_aux, Math2d.DIR_INVCW);
 
         let intersectionCenters: Vector2d[];
         try {
-            intersectionCenters = MathCircf2d.getInter(C_A_aux, C_B_aux);
+            intersectionCenters = MathCircf2d.getCircunfsIntersectings(C_A_aux, C_B_aux);
         } catch (e: any) {
             const distCentersAB = MathFunction2d.getDistance(circA.position, circB.position);
             if (MathFunction2d.isZero(distCentersAB) &&
                 MathFunction2d.isEqual(circA.radius, circB.radius)) {
-                throw new Error(
-                    "circA y circB son idénticas. Existen infinitas circunferencias de radio R " +
-                    "tangentes exteriormente a ellas."
-                );
+                throw new Error("circA y circB son idénticas.");
             }
             throw e;
         }
@@ -203,77 +197,40 @@ export class MathCircf2d {
         return tangentCircles;
     }
 
-    public static getExternalCommonTangents(circA: Circunf2d, circB: Circunf2d): Line2d[] {
+    public static getCircunfsExtTangents(circA: Circunf2d, circB: Circunf2d): Line2d[] {
         const distCenters = MathFunction2d.getDistance(circA.position, circB.position);
 
-        /*
-        if (MathFunction2d.isZero(distCenters)) {
-            if (MathFunction2d.isEqual(circA.radius, circB.radius)) {
-                throw new Error("existen infinitas tangentes comunes.");
-            } else {
-                throw new Error("no existen tangentes exteriores comunes.");
-            }
-        }
-        */
-        // Caso especial: Radios iguales
-        /*
-        if (MathFunction2d.isEqual(circA.radius, circB.radius)) {
-            const R = circA.radius;
-            const P1 = circA.position;
-            const P2 = circB.position;
-
-            const vec_P1P2 = MathVector2d.subtract(P2, P1);
-            // Vector perpendicular normalizado a la línea que une los centros
-            const dir_perp_norm = MathVector2d.normalize([-vec_P1P2[1], vec_P1P2[0]]);
-
-            const T1_C1 = MathVector2d.add(P1, MathVector2d.multiplyByScalar(dir_perp_norm, R));
-            const T1_C2 = MathVector2d.add(P2, MathVector2d.multiplyByScalar(dir_perp_norm, R));
-            const line1 = new Line2d(T1_C1, T1_C2); // linedir por defecto
-
-            const T2_C1 = MathVector2d.add(P1, MathVector2d.multiplyByScalar(dir_perp_norm, -R));
-            const T2_C2 = MathVector2d.add(P2, MathVector2d.multiplyByScalar(dir_perp_norm, -R));
-            const line2 = new Line2d(T2_C1, T2_C2); // linedir por defecto
-
-            return [line1, line2];
-        }
-        */
-
-        // General case: diferent radius
         let c_large: Circunf2d, c_small: Circunf2d;
         if (circA.radius > circB.radius) {
             c_large = circA;
             c_small = circB;
-        } else {
+        } 
+        else {
             c_large = circB;
             c_small = circA;
         }
-
-        const P1 = c_large.position; // Centro de la circunferencia grande
+        const P1 = c_large.position;
         const R1 = c_large.radius;
-        const P2 = c_small.position; // Centro de la circunferencia pequeña
+        const P2 = c_small.position; 
         const R2 = c_small.radius;
-
         // Radio de la circunferencia auxiliar C_aux (centrada en P1)
-        const R_aux = R1 - R2; // R_aux > 0 porque R1 > R2 (ya manejamos R1=R2)
+        const R_aux = R1 - R2; 
         if (distCenters < R_aux - Math2d.EPSILON) {
             console.warn("No hay tangentes exteriores comunes.");
             return [];
         }
-
         // Construir la circunferencia auxiliar C_aux
-        const C_aux = new Circunf2d(P1, R_aux,Math2d.DIR_INVCW);
+        const C_aux = new Circunf2d(P1, R_aux, Math2d.DIR_INVCW);
         const M = MathVector2d.multiplyByScalar(MathVector2d.add(P1, P2), 0.5);
-        const C_mid = new Circunf2d(M, distCenters / 2.0,Math2d.DIR_INVCW);
-        let T_aux_points: Vector2d[] = MathCircf2d.getInter(C_aux, C_mid);;
+        const C_mid = new Circunf2d(M, distCenters / 2.0, Math2d.DIR_INVCW);
+        let T_aux_points: Vector2d[] = MathCircf2d.getCircunfsIntersectings(C_aux, C_mid);;
 
         /*
         if (T_aux_points.length < 2) {
             if (T_aux_points.length === 1 && MathFunction2d.isEqual(distCenters, R_aux)) {
                 console.warn("Las circunferencias son tangentes internamente.");
             } 
-            else {
-                console.warn(`dos tangentes exteriores distintas.`);
-            }
+            else { console.warn(`dos tangentes exteriores distintas.`); }
             return [];
         }
         */
@@ -287,8 +244,8 @@ export class MathCircf2d {
         const tanP2_L1 = MathVector2d.add(P2, MathVector2d.multiplyByScalar(vec_dir1_norm, R2));
         const tanP1_L2 = MathVector2d.add(P1, MathVector2d.multiplyByScalar(vec_dir2_norm, R1));
         const tanP2_L2 = MathVector2d.add(P2, MathVector2d.multiplyByScalar(vec_dir2_norm, R2));
-        const tangentLine1 = new Line2d(tanP1_L1, tanP2_L1,Math2d.DIR_INVCW,MathGraphs.DEF_LINE_COLOR);
-        const tangentLine2 = new Line2d(tanP1_L2, tanP2_L2,Math2d.DIR_INVCW,MathGraphs.DEF_LINE_COLOR);
+        const tangentLine1 = new Line2d(tanP1_L1, tanP2_L1, Math2d.DIR_INVCW, MathGraphs.DEF_LINE_COLOR);
+        const tangentLine2 = new Line2d(tanP1_L2, tanP2_L2, Math2d.DIR_INVCW, MathGraphs.DEF_LINE_COLOR);
         //Math2d.DIR_INVCLOKWISE  
         return [tangentLine1, tangentLine2];
     }
@@ -302,28 +259,26 @@ export class MathCircf2d {
         const bx = p2[0], by = p2[1];
         const cx = p3[0], cy = p3[1];
 
-        // --- Calculate the common denominator (d) ---
+        // Calculate the common denominator (d) 
         const term1_d = ax * (by - cy);
         const term2_d = bx * (cy - ay);
         const term3_d = cx * (ay - by);
         const d = 2 * (term1_d + term2_d + term3_d);
 
-        if (Math.abs(d) < Math2d.EPSILON) {
-            throw new Error("Points are collinear or too close together");
-        }
+        if (Math.abs(d) < Math2d.EPSILON) {throw new Error("Points collinear or too close");}
 
-        // --- Pre-calculate squared magnitudes for numerator terms ---
+        // Pre-calculate squared magnitudes for numerator terms
         const p1_squared_magnitude = (ax * ax + ay * ay);
         const p2_squared_magnitude = (bx * bx + by * by);
         const p3_squared_magnitude = (cx * cx + cy * cy);
 
-        // --- Calculate numerator for ux (center X-coordinate) ---
+        // Calculate numerator for ux (center X-coordinate)
         const num_ux_term1 = p1_squared_magnitude * (by - cy);
         const num_ux_term2 = p2_squared_magnitude * (cy - ay);
         const num_ux_term3 = p3_squared_magnitude * (ay - by);
         const ux = (num_ux_term1 + num_ux_term2 + num_ux_term3) / d;
 
-        // --- Calculate numerator for uy (center Y-coordinate) ---
+        // Calculate numerator for uy (center Y-coordinate)
         const num_uy_term1 = p1_squared_magnitude * (cx - bx);
         const num_uy_term2 = p2_squared_magnitude * (ax - cx);
         const num_uy_term3 = p3_squared_magnitude * (bx - ax);
@@ -333,3 +288,36 @@ export class MathCircf2d {
     }
 
 }//end class
+
+/*
+getCircunfsExtTangents(circA: Circunf2d, circB: Circunf2d)
+if (MathFunction2d.isZero(distCenters)) {
+    if (MathFunction2d.isEqual(circA.radius, circB.radius)) {
+        throw new Error("existen infinitas tangentes comunes.");
+    } else {
+        throw new Error("no existen tangentes exteriores comunes.");
+    }
+}
+
+// Caso especial: Radios iguales
+//getCircunfsExtTangents(circA: Circunf2d, circB: Circunf2d)
+if (MathFunction2d.isEqual(circA.radius, circB.radius)) {
+    const R = circA.radius;
+    const P1 = circA.position;
+    const P2 = circB.position;
+
+    const vec_P1P2 = MathVector2d.subtract(P2, P1);
+    // Vector perpendicular normalizado a la línea que une los centros
+    const dir_perp_norm = MathVector2d.normalize([-vec_P1P2[1], vec_P1P2[0]]);
+
+    const T1_C1 = MathVector2d.add(P1, MathVector2d.multiplyByScalar(dir_perp_norm, R));
+    const T1_C2 = MathVector2d.add(P2, MathVector2d.multiplyByScalar(dir_perp_norm, R));
+    const line1 = new Line2d(T1_C1, T1_C2); // linedir por defecto
+
+    const T2_C1 = MathVector2d.add(P1, MathVector2d.multiplyByScalar(dir_perp_norm, -R));
+    const T2_C2 = MathVector2d.add(P2, MathVector2d.multiplyByScalar(dir_perp_norm, -R));
+    const line2 = new Line2d(T2_C1, T2_C2); // linedir por defecto
+
+    return [line1, line2];
+}
+*/

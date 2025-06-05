@@ -1,4 +1,4 @@
-import { Dimension } from "@/lib/math2d/model/dimension2d";
+import { Dimension } from "@/lib/common/model/dimension2d";
 import { Line2d } from "@/lib/math2d/model/line2d";
 import { GrPoint2d } from "@/lib/graph/model/grpoint2d";
 import { Vector2d } from "@/lib/types/types";
@@ -40,7 +40,7 @@ export class CanvasPainter {
         this.ctx.strokeStyle = point.color;
         this.ctx.lineWidth = 1;
         this.ctx.beginPath();
-        this.ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
+        this.ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
         this.ctx.stroke();
         this.ctx.closePath();
     }

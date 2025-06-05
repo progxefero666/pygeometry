@@ -1,6 +1,6 @@
-import { Dimension } from "@/lib/math2d/model/dimension2d";
-import { GeoEuler2dScene } from "@/lib/math2d/scene/eulerscene";
-import { SceneA } from "./scene/scene_a";
+import { Dimension } from "@/lib/common/model/dimension2d";
+import { Scene2d } from "@/lib/math2d/modelgroup/scene2d";
+import { SceneA_old } from "./scene/scene_a_old";
 
 
 /**
@@ -8,8 +8,8 @@ import { SceneA } from "./scene/scene_a";
  */
 export class GeoEuler2dScenes {
 
-    public scenes: GeoEuler2dScene[];
-    public scene_A: SceneA | null;
+    public scenes: Scene2d[];
+    public scene_A: SceneA_old | null;
 
     public constructor(){
         this.scenes = [];
@@ -18,7 +18,7 @@ export class GeoEuler2dScenes {
     }
 
     public chargeScenes():void{
-        this.scene_A = new SceneA("SceneA",GeoEuler2dScene.DEF_DIMENSION);
+        this.scene_A = new SceneA_old("SceneA",Scene2d.DEF_DIMENSION);
         this.scenes.push( this.scene_A);
     }
 } 

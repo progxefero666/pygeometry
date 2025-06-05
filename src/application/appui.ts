@@ -1,6 +1,6 @@
 //src\application\appui.ts
 
-import { Dimension } from "@/lib/math2d/model/dimension2d";
+import { Dimension } from "@/lib/common/model/dimension2d";
 import { useState, useEffect } from "react";
 
 export function useClientReady() {
@@ -16,7 +16,7 @@ export function useClientReady() {
  */
 export class AppUI {
 
-    public static readonly DEF_CANVAS_DIMENSION: Dimension = new Dimension(512, 512)
+    public static readonly DEF_CANVAS_DIMENSION: Dimension = new Dimension(642,500)
 
     //const device = window.screen;
     public static getBrowserDimension(): Dimension {

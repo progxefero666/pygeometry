@@ -5,6 +5,8 @@ funcion en typescript para q me devuelva las 2 lineas tangentes exteriores a 2 c
 
 export type Vector2d = [number, number];
 
+particles.db
+
 
 cacular dif radios.
  poner una cf en el centro de la grande con ese radio. 

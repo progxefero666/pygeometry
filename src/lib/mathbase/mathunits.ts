@@ -1,7 +1,7 @@
 //src\lib\mathbase\mathunits.ts
 
 /**
- * Class MathUnits
+ * Class MathUnits.toRadians()
  */
 export class MathUnits {
 

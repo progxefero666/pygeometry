@@ -13,6 +13,7 @@ export class Line2d {
     public static readonly DEF: Line2d = new Line2d
         ([0,0],[0,0],Math2d.DIR_INVCW,MathGraphs.DEF_LINE_COLOR);
 
+    public p_index: number = -1; 
     public color: string = WebColors.COLOR_WHITE;
     public linedir: number;
     public point_0:Vector2d;

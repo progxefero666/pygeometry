@@ -1,8 +1,8 @@
 //src\lib\math2d\mathfunc2d.ts
 
 import { Vector2d } from "@/lib/types/types";
-import { Math2d } from "./math2d";
-import { Line2d } from "./model/line2d";
+import { Math2d } from "../math2d";
+import { Line2d } from "../model/line2d";
 import { MathVector2d } from "./mathvector2d";
 
 /**

@@ -1,36 +1,33 @@
+//src\app\geoeuler2d\page.tsx
 "use client";
 
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 import { ButtonsColors, ThemeColors } from "@/style/apptheme";
-import { Dimension } from "@/lib/math2d/model/dimension2d";
+import { Dimension } from "@/lib/common/model/dimension2d";
 import { InputRange, InputRangeRef } from "@/jsx/form/inputrange";
 import { AppUI, useClientReady } from "@/application/appui";
 import { XButtonIcon } from "@/jsx/button/iconbutton";
 import { InputNumber } from "@/jsx/form/inputnumber";
-import { CvMathGraph } from "@/application/common/cvmathgraph";
 import { WebColors } from "@/lib/graph/webcolors";
 import ThemeControl from "@/jsx/theme/themecontrol";
-
+import { ControlCanvas } from "./ctrlcanvas";
+import { Figure2d } from "@/lib/math2d/modelgroup/figure2d";
+import { MathFigure2dGen } from "@/lib/math2d/lib/mathfig2dgen";
+import { Scene2d } from "@/lib/math2d/modelgroup/scene2d";
+import { SceneA } from "./scene/scene_a";
 
 // view:css
 import "@/css/allwidths.css";
 import "@icon/themify-icons/themify-icons.css";
-import { ControlCanvas } from "./ctrlcanvas";
-import { GeoScenes } from "./geoscenes";
-import { InputSelect } from "@/jsx/form/inputselect";
-import { Figure2d } from "@/lib/math2d/model/figure2d";
-import { CfCurve2d } from "@/lib/math2d/model/curve2d";
-import { MathFigure2dGen } from "@/lib/math2d/mathfig2dgen";
-
+import { UiPaginator } from "@/jsx/util/paginator";
+import { PaginatorData } from "@/lib/common/util/paginatordata";
+import { PaginatorUtil } from "@/lib/common/util/paginatorutil";
 
 let ctrCanvas: ControlCanvas | null = null;
 
-let scenes: GeoScenes = new GeoScenes();
-//scenes.getListNames
-
 export default function PageGeoEuler2d() {
-    const listScenes = useRef<GeoScenes>(scenes);
-
+    //const listScenes = useRef<GeoScenes>(scenes);
+    const [paginatorData, setPaginatorData] = useState<PaginatorData | null>(null);
     const [canvasDimension, setCanvasDimension] = useState<Dimension>(AppUI.DEF_CANVAS_DIMENSION);
     const [isCanvasInitialized, setIsCanvasInitialized] = useState(false);
     const canvasContRef = useRef<HTMLDivElement | null>(null);
@@ -47,18 +44,24 @@ export default function PageGeoEuler2d() {
         }
     });
 
-    const onPlayerRangeChange = (name: string, result: unknown) => {
-
+    //.........................................................................
+    const chargeScene = (): void => {
+       const scene_A = new SceneA("SceneA",Scene2d.DEF_DIMENSION);
+       ctrCanvas!.renderScene(scene_A);
+       setPaginatorData(scene_A.paginatorData);
     }
 
     const executeActionBar = async (operation: string) => {
     }
+    //.........................................................................
 
-    const chargeScene = (): void => {
-        //ctrCanvas!.renderScene(listScenes.current.scene_charged!);
-        ctrCanvas!.renderFunction(listScenes.current.scene_charged!);
+    const onPlayerRangeChange = (name: string, result: unknown) => {
     }
 
+    const executeFilterUICollection = (opQueryId: string) => {
+      
+    }    
+    
     const chargeGraph = (): void => {
         const figure: Figure2d = MathFigure2dGen.genFigureModelA([0, 0], 150, WebColors.COLOR_GREEN);
         //ctrCanvas!.renderFigure(figure.radius,figure.color,curves);
@@ -87,10 +90,14 @@ export default function PageGeoEuler2d() {
 
                 {/* left colum ................................................................... */}
                 <div className="min-h-[566px] max-h-[566px] flex flex-col border p-2 gap-y-2">
+                    {/*
                     <InputSelect name="scenes"
                         classname="w-full"
                         defaultvalue={listScenes.current.getSceneChargedName()}
-                        collection={listScenes.current.getListNames()} />
+                        collection={listScenes.current.getListNames()} />                    
+                    
+                    */}
+
 
                     <InputRange name="playRange"
                         ref={cvPlayerRange}
@@ -120,6 +127,10 @@ export default function PageGeoEuler2d() {
                             iconname="pulse"
                             iconsize={"md"}
                             iconcolor="black" btntext="generate" />
+                        <UiPaginator
+                            data={paginatorData}
+                            onPagePrevious={() => executeFilterUICollection(PaginatorUtil.OPID_LOADPREVPAGE)}
+                            onPageNext={() => executeFilterUICollection(PaginatorUtil.OPID_LOADNEXTPAGE)} />                            
                     </div>
 
                     <div className="h-[500px] w-full items-center justify-center"

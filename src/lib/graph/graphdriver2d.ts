@@ -10,9 +10,10 @@ import { Point2d } from "../math2d/model/point2d";
 import { CfCurve2d } from "../math2d/model/curve2d";
 import { GrCurve2d } from "./model/grcurve2d";
 import { GrFigure2d } from "./model/grfigure2d";
-import { Figure2d } from "../math2d/model/figure2d";
+import { Figure2d } from "../math2d/modelgroup/figure2d";
 import { GrFunction2d } from "./model/grfunction2d";
-import { GeoEuler2dScene } from "../math2d/scene/eulerscene";
+import { Scene2d } from "../math2d/modelgroup/scene2d";
+import { GeoEuler2dScene_old } from "../math2d/model/eulerscene_old";
 
 /**
  * class GraphDriver2d: 2d graph driver
@@ -75,11 +76,11 @@ export class GraphDriver2d {
         return curves.map((curve) => this.getCurve(curve));
     }   
 
-    public getFunction(scene:GeoEuler2dScene): GrFunction2d {
-        const points:GrPoint2d[]= this.getPoints(scene.getArrayPoints());
-        const lines:GrLine2d[]= this.getLines(scene.getArrayLines());
-        const circunfs:GrCircunf2d[]= this.getCircuns(scene.getArrayCircunfs());
-        const curves:GrCurve2d[]= this.getCurves(scene.getArrayCurves());
+    public getFunction(scene:GeoEuler2dScene_old): GrFunction2d {
+        const points:GrPoint2d[]= this.getPoints(scene.getPoints());
+        const lines:GrLine2d[]= this.getLines(scene.getLines());
+        const circunfs:GrCircunf2d[]= this.getCircuns(scene.getCircunfs());
+        const curves:GrCurve2d[]= this.getCurves(scene.getCurves());
         return new GrFunction2d(points, lines, circunfs, curves, scene.backcolor);
     }
 

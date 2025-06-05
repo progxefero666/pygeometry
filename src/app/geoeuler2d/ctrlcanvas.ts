@@ -2,23 +2,19 @@
 
 import { CanvasPainter } from "@/lib/graph/canvas/canvaspainter";
 import { GraphDriver2d } from "@/lib/graph/graphdriver2d";
-import { MathGraphs } from "@/lib/graph/math/mathgraphs";
-import { GrCircunf2d } from "@/lib/graph/model/grcircunf2d";
 import { GrFigure2d } from "@/lib/graph/model/grfigure2d";
 import { GrFunction2d } from "@/lib/graph/model/grfunction2d";
-import { GrLine2d } from "@/lib/graph/model/grline2d";
-import { GrPoint2d } from "@/lib/graph/model/grpoint2d";
 import { WebColors } from "@/lib/graph/webcolors";
 import { Math2d } from "@/lib/math2d/math2d";
 import { Circunf2d } from "@/lib/math2d/model/circunf2d";
 import { CfCurve2d } from "@/lib/math2d/model/curve2d";
-import { Dimension } from "@/lib/math2d/model/dimension2d";
-import { Figure2d } from "@/lib/math2d/model/figure2d";
+import { Dimension } from "@/lib/common/model/dimension2d";
+import { Figure2d } from "@/lib/math2d/modelgroup/figure2d";
 import { Line2d } from "@/lib/math2d/model/line2d";
 import { Point2d } from "@/lib/math2d/model/point2d";
-import { GeoEuler2dScene } from "@/lib/math2d/scene/eulerscene";
-import { Vector2d } from "@/lib/types/types";
 
+import { Vector2d } from "@/lib/types/types";
+import { Scene2d } from "@/lib/math2d/modelgroup/scene2d";
 
 
 /**
@@ -27,7 +23,8 @@ import { Vector2d } from "@/lib/types/types";
 export class ControlCanvas {
 
     public padding: number = 8;
-    public cfg_renderAxis: boolean = true;
+    public cfg_renderAxis: boolean = false;
+
     public driver: GraphDriver2d;
     public backcolor: string;
     public cc: Vector2d = [0, 0];
@@ -70,21 +67,24 @@ export class ControlCanvas {
         this.painter.drawFigure(gr_figure);
     }
     
-    public renderScene(scene: GeoEuler2dScene) {
-        const sc_points: Point2d[] = scene.getArrayPoints();
-        const sc_lines:  Line2d[] = scene.getArrayLines();
-        const sc_circfs: Circunf2d[] = scene.getArrayCircunfs();
-        const sc_curves: CfCurve2d[] = scene.getArrayCurves();
-        
+    public renderScene(scene: Scene2d) {
+        const sc_points: Point2d[] = scene.getPoints();
+        const sc_lines:  Line2d[] = scene.getLines();
+        const sc_circfs: Circunf2d[] = scene.getCircunfs();
+        const sc_curves: CfCurve2d[] = scene.getCurves();        
+
         this.painter.drawPoints(this.driver.getPoints(sc_points));
         this.painter.drawLines(this.driver.getLines(sc_lines));
         this.painter.drawCircuns(this.driver.getCircuns(sc_circfs));
-        this.painter.drawCurves(this.driver.getCurves(sc_curves));
-    };
+        this.painter.drawCurves(this.driver.getCurves(sc_curves));        
+    }
 
-    public renderFunction(scene: GeoEuler2dScene) {
+
+
+    /*
+    public renderFunction(scene: GeoEuler2dScene_old) {
         const func:GrFunction2d = this.driver.getFunction(scene);
         this.painter.drawFunction(func);
     };
-
+    */
 } //end class

@@ -4,7 +4,7 @@ import { CanvasPainter } from "@/lib/graph/canvas/canvaspainter";
 import { GraphDriver2d } from "@/lib/graph/graphdriver2d";
 import { WebColors } from "@/lib/graph/webcolors";
 import { CfCurve2d } from "@/lib/math2d/model/curve2d";
-import { Dimension } from "@/lib/math2d/model/dimension2d";
+import { Dimension } from "@/lib/common/model/dimension2d";
 import { Line2d } from "@/lib/math2d/model/line2d";
 import { Vector2d } from "@/lib/types/types";
 

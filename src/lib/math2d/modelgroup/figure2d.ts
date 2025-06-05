@@ -1,8 +1,8 @@
 //src\lib\math2d\model\figure2d.ts
 
-import { Dimension } from "@/lib/math2d/model/dimension2d";
+import { Dimension } from "@/lib/common/model/dimension2d";
 import { WebColors } from "../../graph/webcolors";
-import { CfCurve2d } from "./curve2d";
+import { CfCurve2d } from "../model/curve2d";
 import { Vector2d } from "@/lib/types/types";
 
 
@@ -12,14 +12,15 @@ import { Vector2d } from "@/lib/types/types";
 export class Figure2d {
 
     public static readonly DEF_COLOR: string = WebColors.COLOR_WHITE;
-
+    
+    public p_index: number = -1;
     public color: string;
-    public position:Vector2d;
+    public position: Vector2d;
     public radius: number;
     public dimension: Dimension = Dimension.DEF;
     public curves: CfCurve2d[] = [];
 
-    constructor(position:Vector2d,radius: number,curves: CfCurve2d[],color?: string) {
+    constructor(position: Vector2d, radius: number, curves: CfCurve2d[], color?: string) {
         this.position = position;
         this.radius = radius;
         this.curves = curves;
