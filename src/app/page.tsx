@@ -1,43 +1,24 @@
 //src\app\page.tsx
 "use client";
 
-import { useEffect } from "react";
+import { CollectionsPanel } from "@/application/dashboard/CollectionsPanel";
+import { SearchPanel } from "@/application/dashboard/SearchPanel";
+import { ExportPanel } from "@/application/dashboard/ExportPanel";
+import { AppShell } from "@/radix/appshell";
 
-import "@/css/allwidths.css"; 
-import { AppUI, useClientReady } from "@/application/appui";
-import PageGeoEuler2d from "./geoeuler2d/page";
 
-
-/**
- * Main app view page component
- * 
- */
-export default function Home() {
-    
-    useEffect(() => {
-
-    }, []);
-    
-
-    const clientReady = useClientReady();
-    if (!clientReady) { return <div>Loading...</div>; }
-
-    function getRootClassName() {
-        const device =window.screen;
-        return AppUI.getRootContainerWidthClass(device.width);
-    }
-  
-    const render = () => {
-        const mode: number = 0;
-        //<PageHeader />
-        switch (mode) {
-            case 0: return <PageGeoEuler2d />
-        }
-    };
-    return (
-        <div id="cont_root" className={getRootClassName()} >            
-            {render()}
-        </div>
-    );
-
-}//end comp
+export default function DashboardPage() {
+  return (
+    <AppShell>
+      <section id="collections" className="min-h-[calc(100vh-4rem-6rem)] scroll-mt-16 max-w-screen-xl mx-auto"> {/* Adjust padding for sticky header */}
+        <CollectionsPanel />
+      </section>
+      <section id="search" className="min-h-[calc(100vh-4rem-6rem)] scroll-mt-16 max-w-screen-xl mx-auto">
+        <SearchPanel />
+      </section>
+      <section id="export" className="min-h-[calc(100vh-4rem-6rem)] scroll-mt-16 max-w-screen-xl mx-auto">
+        <ExportPanel />
+      </section>
+    </AppShell>
+  );
+}

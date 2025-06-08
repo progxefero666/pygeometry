@@ -1,6 +1,9 @@
 //src\app\geoeuler2d\page.tsx
 "use client";
 
+
+import { QdrantClient } from '@qdrant/js-client-rest';
+
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 import { ButtonsColors, ThemeColors } from "@/style/apptheme";
 import { Dimension } from "@/lib/common/model/dimension2d";
