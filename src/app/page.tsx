@@ -4,7 +4,7 @@
 import { CollectionsPanel } from "@/application/dashboard/CollectionsPanel";
 import { SearchPanel } from "@/application/dashboard/SearchPanel";
 import { ExportPanel } from "@/application/dashboard/ExportPanel";
-import { AppShell } from "@/radix/appshell";
+import { AppShell } from "@/radix/bar/appbar";
 
 
 export default function DashboardPage() {

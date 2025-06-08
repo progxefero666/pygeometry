@@ -6,7 +6,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
-import { Sheet } from "@/radix/sheet"
+import { Sheet } from "@/radix/data/sheet"
 
 
 import { cn } from "@/lib/utils"
@@ -16,12 +16,12 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/radix/tooltip"
+} from "@/radix/common/tooltip"
 import { useIsMobile } from "@/application/hooks/use-mobile"
 import { Separator } from "@radix-ui/react-menubar"
-import { Button } from "./button"
-import { Input } from "./input"
-import { SheetContent } from "./sheet"
+import { Button } from "../button/button"
+import { Input } from "../form/input"
+import { SheetContent } from "../data/sheet"
 import { Skeleton } from "./skeleton"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

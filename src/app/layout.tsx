@@ -6,7 +6,7 @@ import "@/css/containers.css";
 import "@/css/input.css";
 import "@/css/lists.css";
 import "@/css/tailwindcolors.css";
-import { Toaster } from "@/radix/toaster";
+import { Toaster } from "@/radix/toast/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
